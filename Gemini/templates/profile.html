@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پروفایل - چت‌بات Gemini</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .profile-box {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .profile-box h1 {
+            color: white;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .profile-box .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .info-item .label { color: rgba(255, 255, 255, 0.4); }
+        .info-item .value { color: white; font-weight: 500; }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+        .btn:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        .btn-danger:hover { box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3); }
+        .btn-back {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .btn-back:hover { box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1); }
+        .links {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .links .btn { margin-top: 0; }
+        .flash {
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .flash.success { background: rgba(0, 255, 0, 0.1); color: #4ade80; border: 1px solid rgba(0, 255, 0, 0.1); }
+        @media (max-width: 480px) {
+            .profile-box { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-box">
+        <h1>👤 پروفایل</h1>
+        <p class="subtitle">اطلاعات حساب کاربری شما</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="info-item">
+            <span class="label">نام کاربری</span>
+            <span class="value">{{ user[0] }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">ایمیل</span>
+            <span class="value">{{ user[1] or 'ثبت نشده' }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">مدل فعلی</span>
+            <span class="value">{{ user[2] }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">تعداد پیام‌ها</span>
+            <span class="value">{{ total_msgs }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">تاریخ عضویت</span>
+            <span class="value">{{ user[3][:10] if user[3] else '-' }}</span>
+        </div>
+        <div class="info-item">
+            <span class="label">آخرین ورود</span>
+            <span class="value">{{ user[4][:16] if user[4] else '-' }}</span>
+        </div>
+        
+        <div class="links">
+            <a href="{{ url_for('index') }}" class="btn btn-back" style="text-decoration:none; text-align:center;">🔙 بازگشت</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-danger" style="text-decoration:none; text-align:center;">🚪 خروج</a>
+        </div>
+    </div>
+</body>
+</html>
